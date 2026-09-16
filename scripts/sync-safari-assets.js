@@ -67,31 +67,40 @@ function syncSafariAssets() {
   console.log(`Copying build bundle:\n  From: ${SAFARI_BUILD_DIR}\n  To:   ${SAFARI_RESOURCES_DIR}`);
   copyDirRecursive(SAFARI_BUILD_DIR, SAFARI_RESOURCES_DIR);
 
-  // Normalize manifest.json for Safari
-  const manifestPath = path.join(SAFARI_RESOURCES_DIR, "manifest.json");
-  if (fs.existsSync(manifestPath)) {
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  // Normalize manifest.json for Safari in both build directory and Xcode resources directory
+  const manifestPaths = [
+    path.join(SAFARI_BUILD_DIR, "manifest.json"),
+    path.join(SAFARI_RESOURCES_DIR, "manifest.json")
+  ];
 
-    // Filter permissions for Safari MV3 compatibility
-    if (Array.isArray(manifest.permissions)) {
-      const originalPermissions = [...manifest.permissions];
-      manifest.permissions = manifest.permissions.filter((p) =>
-        SAFARI_COMPATIBLE_PERMISSIONS.has(p)
-      );
-      const omitted = originalPermissions.filter((p) => !SAFARI_COMPATIBLE_PERMISSIONS.has(p));
-      if (omitted.length > 0) {
-        console.log(`\x1b[33m  ℹ Filtered Chrome-only permissions for Safari target: [${omitted.join(", ")}]\x1b[0m`);
+  for (const manifestPath of manifestPaths) {
+    if (fs.existsSync(manifestPath)) {
+      const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+
+      // Filter permissions for Safari MV3 compatibility
+      if (Array.isArray(manifest.permissions)) {
+        const originalPermissions = [...manifest.permissions];
+        manifest.permissions = manifest.permissions.filter((p) =>
+          SAFARI_COMPATIBLE_PERMISSIONS.has(p)
+        );
+        const omitted = originalPermissions.filter((p) => !SAFARI_COMPATIBLE_PERMISSIONS.has(p));
+        if (omitted.length > 0 && manifestPath === manifestPaths[0]) {
+          console.log(`\x1b[33m  ℹ Filtered Chrome-only permissions for Safari target: [${omitted.join(", ")}]\x1b[0m`);
+        }
+        if (manifestPath === manifestPaths[0]) {
+          console.log(`\x1b[32m  ✓ Active Safari permissions: [${manifest.permissions.join(", ")}]\x1b[0m`);
+        }
       }
-      console.log(`\x1b[32m  ✓ Active Safari permissions: [${manifest.permissions.join(", ")}]\x1b[0m`);
-    }
 
-    // Ensure background service worker declaration is compliant
-    if (manifest.background && manifest.background.service_worker) {
-      console.log(`\x1b[32m  ✓ Safari MV3 Service Worker configured: ${manifest.background.service_worker}\x1b[0m`);
-    }
+      // Ensure background service worker declaration is compliant
+      if (manifest.background && manifest.background.service_worker && manifestPath === manifestPaths[0]) {
+        console.log(`\x1b[32m  ✓ Safari MV3 Service Worker configured: ${manifest.background.service_worker}\x1b[0m`);
+      }
 
-    fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
+      fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2), "utf8");
+    }
   }
+
 
   console.log("\x1b[32m%s\x1b[0m", "✅ Safari assets successfully synchronized into Xcode extension target!");
   console.log("\x1b[34m%s\x1b[0m", "==========================================================");

@@ -2,7 +2,7 @@
   "name": "Local Browse Analytics",
   "version": "1.0.0",
   "target": "safari-mv3",
-  "buildTimestamp": "2026-09-16T17:03:55.881Z",
+  "buildTimestamp": "2026-09-16T17:35:11.224Z",
   "permissions": [
     "storage",
     "tabs",
@@ -11,7 +11,7 @@
     "notifications"
   ],
   "csp": "script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';",
-  "totalSizeBytes": 2790264,
+  "totalSizeBytes": 2790539,
   "files": {
     "Blob.e9e8c249.png": {
       "sizeBytes": 14818,
@@ -142,8 +142,8 @@
       "sha256": "b41f20d8abe3218702dd13c3c06bb2102535cf60152f9582d4e5372f66914168"
     },
     "static/background/index.js": {
-      "sizeBytes": 157939,
-      "sha256": "8fa3c53227cff2139fabcb441970f3520760ae0a055bd1915193f65d0d662cd6"
+      "sizeBytes": 158214,
+      "sha256": "30dd6b3b8acccd4135ecc162935c7b6ba240fb9cdaa9572d43994867f3d14803"
     },
     "tabs/beepBase64.5196b910.js": {
       "sizeBytes": 4186,
