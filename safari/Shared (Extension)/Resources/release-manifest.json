@@ -2,7 +2,7 @@
   "name": "Local Browse Analytics",
   "version": "1.0.0",
   "target": "safari-mv3",
-  "buildTimestamp": "2026-09-16T17:35:11.224Z",
+  "buildTimestamp": "2026-09-16T17:39:11.948Z",
   "permissions": [
     "storage",
     "tabs",
