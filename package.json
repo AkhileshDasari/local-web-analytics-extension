@@ -13,7 +13,7 @@
     "sync:safari": "node scripts/sync-safari-assets.js",
     "package": "bun run package:chrome",
     "package:chrome": "bun run build:chrome && node scripts/package-extension.js && plasmo package --target=chrome-mv3",
-    "package:safari": "bun run build:safari && node scripts/package-safari.js",
+    "package:safari": "bash scripts/safari-packager.sh",
     "packager:safari": "bash scripts/safari-packager.sh",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
